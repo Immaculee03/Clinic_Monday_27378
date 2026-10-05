@@ -1,0 +1,821 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Clinic Quiz API",
+    "description": "Postman Collection for Spring Boot Clinic Quiz endpoints (Parts A, B, C, and Bonus)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "doctorId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patientId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "officeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "specializationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Step 0 - Seed Data",
+      "item": [
+        {
+          "name": "1. Save Specialization - Cardiology",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cardiology\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/specializations/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "specializations",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Save Specialization - Pediatrics",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pediatrics\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/specializations/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "specializations",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Save Specialization - Dermatology",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dermatology\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/specializations/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "specializations",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Save Specialization - Neurology (Unused)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Neurology\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/specializations/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "specializations",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Save Office - 101",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Room 101\",\n  \"officeNumber\": 101\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/offices/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offices",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Save Office - 102",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Room 102\",\n  \"officeNumber\": 102\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/offices/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offices",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "7. Save Office - 103",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Room 103\",\n  \"officeNumber\": 103\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/offices/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offices",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "8. Save Doctor 1 (Office 101)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Sarah\",\n  \"lastName\": \"Jenkins\",\n  \"dateOfBirth\": \"1980-05-12\",\n  \"office\": {\n    \"id\": \"{{officeId}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "9. Save Doctor 2 (Office 102)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Michael\",\n  \"lastName\": \"Chang\",\n  \"dateOfBirth\": \"1985-09-20\",\n  \"office\": {\n    \"id\": \"{{officeId}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "10. Save Doctor 3 (No Office)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Lisa\",\n  \"lastName\": \"Patel\",\n  \"dateOfBirth\": \"1990-01-15\",\n  \"office\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "11. Save Patient 1 (John Doe)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1990-01-01\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "12. Save Patient 2 (Divine Uwase)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Divine\",\n  \"lastName\": \"Uwase\",\n  \"dateOfBirth\": \"1995-03-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "13. Save Patient 3 (Patrick Uwase)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Patrick\",\n  \"lastName\": \"Uwase\",\n  \"dateOfBirth\": \"1988-07-22\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "14. Save Patient 4 (Emily Davis)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Emily\",\n  \"lastName\": \"Davis\",\n  \"dateOfBirth\": \"1992-11-05\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "15. Save Patient 5 (Michael Brown)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Michael\",\n  \"lastName\": \"Brown\",\n  \"dateOfBirth\": \"1984-04-18\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "save"
+              ]
+            }
+          }
+        },
+        {
+          "name": "16. Save Sample Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-10-05\",\n  \"reason\": \"Routine Checkup\",\n  \"status\": \"COMPLETED\",\n  \"patient\": {\n    \"id\": \"{{patientId}}\"\n  },\n  \"doctor\": {\n    \"id\": \"{{doctorId}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "save"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part A - Derived Queries",
+      "item": [
+        {
+          "name": "A1 - Find patients by last name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/by-last-name?lastName=uwase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "by-last-name"
+              ],
+              "query": [
+                {
+                  "key": "lastName",
+                  "value": "uwase"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "A2 - Appointments by status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/by-status?status=SCHEDULED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "by-status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "SCHEDULED"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "A3 - Appointments in a date range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/between?start=2026-10-01&end=2026-10-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "between"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "end",
+                  "value": "2026-10-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "A4 - No double booking (Conflict Check)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-10-05\",\n  \"reason\": \"Double booking test\",\n  \"status\": \"SCHEDULED\",\n  \"patient\": {\n    \"id\": \"{{patientId}}\"\n  },\n  \"doctor\": {\n    \"id\": \"{{doctorId}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/save",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "save"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part B - JPQL with Joins",
+      "item": [
+        {
+          "name": "B1 - Doctors by specialization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/by-specialization?name=cardiology",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "by-specialization"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "cardiology"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "B2 - Doctors without an office",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/without-office",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "without-office"
+              ]
+            }
+          }
+        },
+        {
+          "name": "B3 - Specializations nobody offers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/specializations/unused",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "specializations",
+                "unused"
+              ]
+            }
+          }
+        },
+        {
+          "name": "B4 - Patients of a doctor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/of-doctor/{{doctorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "of-doctor",
+                "{{doctorId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part C - Aggregates and Bulk Updates",
+      "item": [
+        {
+          "name": "C1 - Appointments per status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/stats/by-status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "stats",
+                "by-status"
+              ]
+            }
+          }
+        },
+        {
+          "name": "C2 - Frequent patients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/frequent?min=3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "frequent"
+              ],
+              "query": [
+                {
+                  "key": "min",
+                  "value": "3"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "C3 - Busiest office",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/offices/busiest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offices",
+                "busiest"
+              ]
+            }
+          }
+        },
+        {
+          "name": "C4 - Doctor is absent",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/cancel-day?doctorId={{doctorId}}&date=2026-10-20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "cancel-day"
+              ],
+              "query": [
+                {
+                  "key": "doctorId",
+                  "value": "{{doctorId}}"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-10-20"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bonus Tasks",
+      "item": [
+        {
+          "name": "+5 - Appointments page by page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/page?page=0&size=5&sort=appointmentDate,desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "page"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                },
+                {
+                  "key": "sort",
+                  "value": "appointmentDate,desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "+5 - Clean old cancellations",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/cancelled-before?date=2025-10-15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "cancelled-before"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-10-15"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
