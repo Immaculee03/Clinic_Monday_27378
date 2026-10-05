@@ -1,0 +1,151 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Clinic Quiz API",
+    "description": "Postman Collection for Spring Boot Clinic Quiz endpoints with hardcoded URLs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Derived Queries",
+      "item": [
+        {
+          "name": "A1 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/patients/by-last-name?lastName=uwase"
+          }
+        },
+        {
+          "name": "A2 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/by-status?status=SCHEDULED"
+          }
+        },
+        {
+          "name": "A3 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/between?start=2026-10-01&end=2026-10-31"
+          }
+        },
+        {
+          "name": "A4 ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-10-05\",\n  \"reason\": \"Double booking test\",\n  \"status\": \"SCHEDULED\"\n}"
+            },
+            "url": "http://localhost:8082/api/appointments/save"
+          }
+        }
+      ]
+    },
+    {
+      "name": " JPQL with Joins",
+      "item": [
+        {
+          "name": "B1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/doctors/by-specialization?name=cardiology"
+          }
+        },
+        {
+          "name": "B2 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/doctors/without-office"
+          }
+        },
+        {
+          "name": "B3 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/specializations/unused"
+          }
+        },
+        {
+          "name": "B4 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/patients/of-doctor/DOCTOR_UUID_HERE"
+          }
+        }
+      ]
+    },
+    {
+      "name": " Aggregates and Bulk Updates",
+      "item": [
+        {
+          "name": "C1 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/stats/by-status"
+          }
+        },
+        {
+          "name": "C2 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/patients/frequent?min=3"
+          }
+        },
+        {
+          "name": "C3 ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/offices/busiest"
+          }
+        },
+        {
+          "name": "C4",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/cancel-day?doctorId=DOCTOR_UUID_HERE&date=2026-10-20"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bonus Tasks",
+      "item": [
+        {
+          "name": " Appointments page by page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/page?page=0&size=5&sort=appointmentDate,desc"
+          }
+        },
+        {
+          "name": "Clean old cancellations",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8082/api/appointments/cancelled-before?date=2025-10-15"
+          }
+        }
+      ]
+    }
+  ]
+}
