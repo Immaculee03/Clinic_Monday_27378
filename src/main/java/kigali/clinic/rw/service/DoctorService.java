@@ -1,6 +1,14 @@
 package kigali.clinic.rw.service;
 
+import java.sql.Date;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import kigali.clinic.rw.domain.Appointment;
+import kigali.clinic.rw.domain.AppointmentStatus;
+import kigali.clinic.rw.domain.Office;
+import kigali.clinic.rw.domain.Specialization;
+import kigali.clinic.rw.repository.AppointmentRepository;
+import kigali.clinic.rw.repository.SpecializationRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,4 +111,96 @@ public class DoctorService {
         return docRepo.findDoctorsWithoutOffice();
     }
 
+    @Autowired 
+    private SpecializationRepository specRepo;
+
+    @Autowired 
+    private AppointmentRepository apptRepo;
+
+    // A1
+    @Transactional
+    public String addSpecialization(UUID doctorId, UUID specializationId){
+
+        Optional<Doctor> doctor = docRepo.findById(doctorId);
+        if(doctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }
+
+        Optional<Specialization> spec = specRepo.findById(specializationId);
+        if(spec.isEmpty()){
+            return "That specialization does not exist";
+        }
+
+        if(doctor.get().getSpecializations().contains(spec.get())){
+            return "The doctor already has that specialization";
+        }
+
+        doctor.get().getSpecializations().add(spec.get());
+        docRepo.save(doctor.get());
+        return "Specialization added to the doctor";
+    }
+
+    // A2
+    @Transactional
+    public String removeSpecialization(UUID doctorId, UUID specializationId){
+
+        Optional<Doctor> doctor = docRepo.findById(doctorId);
+        if(doctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }
+
+        Optional<Specialization> spec = specRepo.findById(specializationId);
+        if(spec.isEmpty()){
+            return "That specialization does not exist";
+        }
+
+        if(!doctor.get().getSpecializations().contains(spec.get())){
+            return "The doctor does not have that specialization";
+        }
+
+        doctor.get().getSpecializations().remove(spec.get());
+        docRepo.save(doctor.get());
+        return "Specialization removed from the doctor";
+    }
+
+    // A4
+    public String changeOffice(UUID doctorId, int officeNumber){
+
+        Optional<Doctor> doctor = docRepo.findById(doctorId);
+        if(doctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }
+
+        Optional<Office> office = offRepo.findByOfficeNumber(officeNumber);
+        if(office.isEmpty()){
+            return "The office with that office number does not exist";
+        }
+
+        if(docRepo.existsByOfficeOfficeNumberAndIdNot(officeNumber, doctorId)){
+            return "That office is taken by other doctor";
+        }
+
+        doctor.get().setOffice(office.get());
+        docRepo.save(doctor.get());
+        return "Office changed successfully";
+    }
+
+    // D1: empty Optional means the doctor does not exist
+    public Optional<List<Appointment>> getAgenda(UUID doctorId, Date date){
+
+        if(!docRepo.existsById(doctorId)){
+            return Optional.empty();
+        }
+        return Optional.of(apptRepo.findByDoctorIdAndAppointmentDateAndStatusNot(doctorId, date, AppointmentStatus.CANCELLED));
+    }
+
+    // D3
+    public List<Doctor> searchDoctors(String name){
+        return docRepo.searchByName(name);
+    }
+
+    // Bonus
+    public List<Object[]> getWorkload(Date start, Date end){
+        return docRepo.findWorkload(AppointmentStatus.COMPLETED, start, end);
+    }
 }

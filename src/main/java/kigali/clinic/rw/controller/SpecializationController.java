@@ -31,8 +31,6 @@ public class SpecializationController {
 
         if(returnedMessage.equals("Specialization is saved successfully")){
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if(returnedMessage.equals("Doctor not found")){
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
@@ -61,7 +59,7 @@ public class SpecializationController {
 
         if(returnedMessage.equals("Specialization is updated successfully")){
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if(returnedMessage.equals("Specialization not found") || returnedMessage.equals("Doctor not found")){
+        }else if(returnedMessage.equals("Specialization not found")){
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);

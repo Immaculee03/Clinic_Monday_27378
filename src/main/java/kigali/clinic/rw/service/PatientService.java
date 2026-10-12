@@ -1,5 +1,11 @@
 package kigali.clinic.rw.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Arrays;
+import kigali.clinic.rw.domain.Appointment;
+import kigali.clinic.rw.domain.AppointmentStatus;
+import kigali.clinic.rw.repository.AppointmentRepository;
 import kigali.clinic.rw.repository.DoctorRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +23,10 @@ public class PatientService {
     private PatientRepository patRepo;
 
     public String savePatient(Patient patient){
+
+        if(patient.getSsNumber() != null && patRepo.existsBySsNumber(patient.getSsNumber())){
+            return "Patient with that ssNumber already exists";
+        }
 
         patRepo.save(patient);
         return "Patient is saved successfully";
@@ -41,6 +51,7 @@ public class PatientService {
         existing.setFirstName(patient.getFirstName());
         existing.setLastName(patient.getLastName());
         existing.setDateOfBirth(patient.getDateOfBirth());
+        existing.setSsNumber(patient.getSsNumber());
         patRepo.save(existing);
         return "Patient is updated successfully";
     }
@@ -82,4 +93,19 @@ public class PatientService {
         return patRepo.findFrequentPatients(min);
     }
 
+    @Autowired 
+    private AppointmentRepository apptRepo;
+
+    // D2: empty Optional means the patient does not exist
+    public Optional<List<Appointment>> getUpcomingAppointments(String ssNumber){
+
+        if(!patRepo.existsBySsNumber(ssNumber)){
+            return Optional.empty();
+        }
+
+        Date today = Date.valueOf(LocalDate.now());
+        List<AppointmentStatus> statuses = Arrays.asList(AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED);
+
+        return Optional.of(apptRepo.findByPatientSsNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(ssNumber, today, statuses));
+    }
 }

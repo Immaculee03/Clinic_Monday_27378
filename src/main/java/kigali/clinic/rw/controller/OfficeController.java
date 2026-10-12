@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController 
-@RequestMapping (value={"/api/office"})
+@RequestMapping (value={"/api/office", "/api/offices"})
 public class OfficeController {
 
     @Autowired 
@@ -95,4 +95,9 @@ public class OfficeController {
         return new ResponseEntity<>(busiest.get(), HttpStatus.OK);
     }
 
+    // A3
+    @GetMapping(value = "/free")
+    public ResponseEntity<?> getFreeOffices(){
+        return new ResponseEntity<>(offServe.getFreeOffices(), HttpStatus.OK);
+    }
 }

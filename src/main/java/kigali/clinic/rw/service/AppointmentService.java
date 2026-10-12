@@ -4,6 +4,8 @@ import kigali.clinic.rw.domain.AppointmentStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import java.sql.Date;
+import java.time.LocalDate;
+import kigali.clinic.rw.repository.PrescriptionRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,6 +56,15 @@ public class AppointmentService {
             return problem;
         }
 
+        // B1: no booking in the past, and a new appointment always starts as SCHEDULED
+        if(appointment.getAppointmentDate() == null){
+            return "Appointment date is required";
+        }
+        if(appointment.getAppointmentDate().toLocalDate().isBefore(LocalDate.now())){
+            return "Appointment date cannot be in the past";
+        }
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
+
         // A4: a doctor cannot have two appointments on the same date unless the other one is CANCELLED
         if(appointment.getAppointmentDate() != null &&
            apptRepo.existsByDoctorIdAndAppointmentDateAndStatusNot(
@@ -88,7 +99,6 @@ public class AppointmentService {
         Appointment existing = found.get();
         existing.setAppointmentDate(appointment.getAppointmentDate());
         existing.setReason(appointment.getReason());
-        existing.setStatus(appointment.getStatus());
         existing.setPatient(appointment.getPatient());
         existing.setDoctor(appointment.getDoctor());
         apptRepo.save(existing);
@@ -99,6 +109,11 @@ public class AppointmentService {
 
         if(!apptRepo.existsById(id)){
             return "Appointment not found";
+        }
+
+        // C4: an appointment that has prescriptions cannot be deleted
+        if(presRepo.existsByAppointmentId(id)){
+            return "The appointment has prescriptions and cannot be deleted";
         }
 
         apptRepo.deleteById(id);
@@ -144,4 +159,65 @@ public class AppointmentService {
         return count + " appointments deleted";
     }
 
+    @Autowired 
+    private PrescriptionRepository presRepo;
+
+    // B2: status can only move along the allowed arrows
+    public String changeStatus(UUID id, AppointmentStatus newStatus){
+
+        Optional<Appointment> found = apptRepo.findById(id);
+        if(found.isEmpty()){
+            return "The appointment with that id does not exist";
+        }
+
+        Appointment appointment = found.get();
+        AppointmentStatus current = appointment.getStatus();
+
+        boolean allowed = false;
+        if(current == AppointmentStatus.SCHEDULED && (newStatus == AppointmentStatus.CONFIRMED || newStatus == AppointmentStatus.CANCELLED)){
+            allowed = true;
+        }
+        if(current == AppointmentStatus.CONFIRMED && (newStatus == AppointmentStatus.COMPLETED || newStatus == AppointmentStatus.CANCELLED)){
+            allowed = true;
+        }
+
+        if(!allowed){
+            return "Cannot change status from " + current + " to " + newStatus;
+        }
+
+        appointment.setStatus(newStatus);
+        apptRepo.save(appointment);
+        return "Appointment status updated successfully";
+    }
+
+    // B3
+    public String rescheduleAppointment(UUID id, Date newDate){
+
+        Optional<Appointment> found = apptRepo.findById(id);
+        if(found.isEmpty()){
+            return "The appointment with that id does not exist";
+        }
+
+        Appointment appointment = found.get();
+
+        if(appointment.getStatus() == AppointmentStatus.COMPLETED){
+            return "A COMPLETED appointment cannot be rescheduled";
+        }
+        if(appointment.getStatus() == AppointmentStatus.CANCELLED){
+            return "A CANCELLED appointment cannot be rescheduled";
+        }
+
+        if(newDate.toLocalDate().isBefore(LocalDate.now())){
+            return "Appointment date cannot be in the past";
+        }
+
+        if(apptRepo.existsByDoctorIdAndAppointmentDateAndStatusNot(appointment.getDoctor().getId(), newDate, AppointmentStatus.CANCELLED)){
+            return "Doctor is already booked on that date";
+        }
+
+        appointment.setAppointmentDate(newDate);
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
+        apptRepo.save(appointment);
+        return "Appointment rescheduled successfully";
+    }
 }

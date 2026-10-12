@@ -26,7 +26,7 @@ import kigali.clinic.rw.service.AppointmentService;
 
 
 @RestController 
-@RequestMapping (value={"/api/appointment"})
+@RequestMapping (value={"/api/appointment", "/api/appointments"})
 public class AppointmentController {
 
     @Autowired 
@@ -86,8 +86,10 @@ public class AppointmentController {
 
         if(returnedMessage.equals("Appointment is deleted successfully")){
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else{
+        }else if(returnedMessage.equals("Appointment not found")){
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
     }
 
@@ -147,4 +149,35 @@ public class AppointmentController {
         return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
     }
 
+    // B2
+    @PatchMapping(value = "/{id}/status")
+    public ResponseEntity<?> changeStatus(@PathVariable UUID id, @RequestParam AppointmentStatus status){
+
+        String returnedMessage = apptServe.changeStatus(id, status);
+
+        if(returnedMessage.equals("Appointment status updated successfully")){
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        }else if(returnedMessage.equals("The appointment with that id does not exist")){
+            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(returnedMessage, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // B3
+    @PatchMapping(value = "/{id}/reschedule")
+    public ResponseEntity<?> rescheduleAppointment(@PathVariable UUID id, @RequestParam String newDate){
+
+        String returnedMessage = apptServe.rescheduleAppointment(id, Date.valueOf(LocalDate.parse(newDate)));
+
+        if(returnedMessage.equals("Appointment rescheduled successfully")){
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        }else if(returnedMessage.equals("The appointment with that id does not exist")){
+            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        }else if(returnedMessage.equals("Doctor is already booked on that date")){
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
+        }else{
+            return new ResponseEntity<>(returnedMessage, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

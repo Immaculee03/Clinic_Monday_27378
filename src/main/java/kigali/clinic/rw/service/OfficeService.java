@@ -78,4 +78,8 @@ public class OfficeService {
         return Optional.of(rows.get(0));
     }
 
+    // A3
+    public List<Office> getFreeOffices(){
+        return offRepo.findFreeOffices();
+    }
 }
