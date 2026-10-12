@@ -1,0 +1,1945 @@
+{
+  "info": {
+    "name": "clinic-quiz2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Step 0 - ssNumbers",
+      "item": [
+        {
+          "name": "Give Imena an ssNumber (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Patient is updated successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/patients/update/{{patientImena}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "update",
+                "{{patientImena}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Imena\",\n  \"lastName\": \"iv\",\n  \"dateOfBirth\": \"1995-04-18\",\n  \"ssNumber\": \"{{ssImena}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Give om an ssNumber (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Patient is updated successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/patients/update/{{patientOm}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "update",
+                "{{patientOm}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"om\",\n  \"lastName\": \"ivy\",\n  \"dateOfBirth\": \"1989-04-20\",\n  \"ssNumber\": \"{{ssOm}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part A - doctors and offices",
+      "item": [
+        {
+          "name": "A1 - add Cardiology to Dr John (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Specialization added to the doctor\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A1 - same again (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor already has that specialization\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A1 - wrong doctor id (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/00000000-0000-0000-0000-000000000000/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "00000000-0000-0000-0000-000000000000",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A1 - wrong specialization id (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"That specialization does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/specializations/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "specializations",
+                "00000000-0000-0000-0000-000000000000"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A2 - remove Cardiology from Dr John (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Specialization removed from the doctor\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A2 - remove again (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor does not have that specialization\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A2 - wrong doctor id (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/00000000-0000-0000-0000-000000000000/specializations/{{specCardiology}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "00000000-0000-0000-0000-000000000000",
+                "specializations",
+                "{{specCardiology}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A3 - free offices (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/offices/free",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "offices",
+                "free"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A4 - move Dr John to office 104 (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Office changed successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/office?officeNumber=104",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "office"
+              ],
+              "query": [
+                {
+                  "key": "officeNumber",
+                  "value": "104"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A4 - office 104 is now taken (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"That office is taken by other doctor\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorLuck}}/office?officeNumber=104",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorLuck}}",
+                "office"
+              ],
+              "query": [
+                {
+                  "key": "officeNumber",
+                  "value": "104"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A4 - office does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The office with that office number does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorJohn}}/office?officeNumber=999",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorJohn}}",
+                "office"
+              ],
+              "query": [
+                {
+                  "key": "officeNumber",
+                  "value": "999"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "A4 - wrong doctor id (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/00000000-0000-0000-0000-000000000000/office?officeNumber=104",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "00000000-0000-0000-0000-000000000000",
+                "office"
+              ],
+              "query": [
+                {
+                  "key": "officeNumber",
+                  "value": "104"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part B - appointment rules",
+      "item": [
+        {
+          "name": "B1 - past date is refused (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Appointment date cannot be in the past\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/save",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "save"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-10-01\",\n  \"reason\": \"Checkup\",\n  \"status\": \"COMPLETED\",\n  \"patient\": {\n    \"id\": \"{{patientImena}}\"\n  },\n  \"doctor\": {\n    \"id\": \"{{doctorLuck}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "B1 - future date, status in body is ignored (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Appointment is saved successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/save",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "save"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentDate\": \"2026-11-05\",\n  \"reason\": \"Checkup\",\n  \"status\": \"COMPLETED\",\n  \"patient\": {\n    \"id\": \"{{patientImena}}\"\n  },\n  \"doctor\": {\n    \"id\": \"{{doctorLuck}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "B2 - SCHEDULED to COMPLETED is not allowed (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Cannot change status from SCHEDULED to COMPLETED\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptScheduled}}/status?status=COMPLETED",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptScheduled}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "COMPLETED"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B2 - CANCELLED to SCHEDULED is not allowed (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Cannot change status from CANCELLED to SCHEDULED\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptCancelled}}/status?status=SCHEDULED",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptCancelled}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "SCHEDULED"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B2 - COMPLETED to CANCELLED is not allowed (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Cannot change status from COMPLETED to CANCELLED\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptCompleted}}/status?status=CANCELLED",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptCompleted}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "CANCELLED"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B2 - appointment id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The appointment with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/00000000-0000-0000-0000-000000000000/status?status=CONFIRMED",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "00000000-0000-0000-0000-000000000000",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "CONFIRMED"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B2 - SCHEDULED to CONFIRMED (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Appointment status updated successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptToConfirm}}/status?status=CONFIRMED",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptToConfirm}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "CONFIRMED"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - COMPLETED cannot be rescheduled (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"A COMPLETED appointment cannot be rescheduled\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptCompleted}}/reschedule?newDate=2026-10-30",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptCompleted}}",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-30"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - CANCELLED cannot be rescheduled (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"A CANCELLED appointment cannot be rescheduled\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptCancelled}}/reschedule?newDate=2026-10-30",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptCancelled}}",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-30"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - new date in the past (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Appointment date cannot be in the past\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptScheduled}}/reschedule?newDate=2026-10-01",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptScheduled}}",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-01"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - appointment id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The appointment with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/00000000-0000-0000-0000-000000000000/reschedule?newDate=2026-10-30",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "00000000-0000-0000-0000-000000000000",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-30"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - doctor already booked that day (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Doctor is already booked on that date\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptScheduled}}/reschedule?newDate=2026-10-14",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptScheduled}}",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-14"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "B3 - reschedule to a free day (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Appointment rescheduled successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/{{apptScheduled}}/reschedule?newDate=2026-10-30",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "{{apptScheduled}}",
+                "reschedule"
+              ],
+              "query": [
+                {
+                  "key": "newDate",
+                  "value": "2026-10-30"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part C - prescriptions",
+      "item": [
+        {
+          "name": "C1 - write a prescription (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Prescription saved successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/save?appointmentId={{apptCompleted}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "appointmentId",
+                  "value": "{{apptCompleted}}"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Amoxicillin\",\n  \"dosage\": \"1 tablet, 3 times a day\",\n  \"durationDays\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1 - appointment is not COMPLETED (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Prescriptions are only for COMPLETED appointments\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/save?appointmentId={{apptScheduled}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "appointmentId",
+                  "value": "{{apptScheduled}}"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Amoxicillin\",\n  \"dosage\": \"1 tablet, 3 times a day\",\n  \"durationDays\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C1 - appointment id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The appointment with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/save?appointmentId=00000000-0000-0000-0000-000000000000",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "appointmentId",
+                  "value": "00000000-0000-0000-0000-000000000000"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Amoxicillin\",\n  \"dosage\": \"1 tablet, 3 times a day\",\n  \"durationDays\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C2 - prescriptions of an appointment (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "var list = pm.response.json();\npm.test(\"Has at least one prescription\", function () { pm.expect(list.length).to.be.above(0); });\nif (list.length > 0) { pm.collectionVariables.set(\"prescriptionId\", list[0].id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/appointment/{{apptCompleted}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "appointment",
+                "{{apptCompleted}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "C2 - appointment id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The appointment with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/appointment/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "appointment",
+                "00000000-0000-0000-0000-000000000000"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "C2 - appointment with no prescriptions gives empty list (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"List is empty\", function () { pm.expect(pm.response.json().length).to.eql(0); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/appointment/{{apptScheduled}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "appointment",
+                "{{apptScheduled}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "C3 - prescription history of a patient (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/patient/{{ssOm}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "patient",
+                "{{ssOm}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "C4 - update a prescription (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Prescription updated successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/update/{{prescriptionId}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "update",
+                "{{prescriptionId}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Amoxicillin\",\n  \"dosage\": \"1 tablet, 2 times a day\",\n  \"durationDays\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C4 - update, id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The prescription with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/update/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "update",
+                "00000000-0000-0000-0000-000000000000"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicineName\": \"Amoxicillin\",\n  \"dosage\": \"1 tablet, 2 times a day\",\n  \"durationDays\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "C4 - appointment with prescriptions cannot be deleted (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/appointments/delete/{{apptCompleted}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "appointments",
+                "delete",
+                "{{apptCompleted}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part D - agenda and reports",
+      "item": [
+        {
+          "name": "D1 - doctor agenda, cancelled ones hidden (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"No CANCELLED in agenda\", function () { pm.response.json().forEach(function (a) { pm.expect(a.status).to.not.eql(\"CANCELLED\"); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/{{doctorLuck}}/agenda?date=2026-10-14",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "{{doctorLuck}}",
+                "agenda"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-10-14"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D1 - doctor id does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The doctor with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/00000000-0000-0000-0000-000000000000/agenda?date=2026-10-14",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "00000000-0000-0000-0000-000000000000",
+                "agenda"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-10-14"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D2 - upcoming appointments of a patient (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Only SCHEDULED or CONFIRMED\", function () { pm.response.json().forEach(function (a) { pm.expect([\"SCHEDULED\",\"CONFIRMED\"]).to.include(a.status); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/patients/{{ssImena}}/upcoming",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "{{ssImena}}",
+                "upcoming"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D2 - ssNumber does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"That patient with that ssnumber does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/patients/SS-NOPE/upcoming",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "SS-NOPE",
+                "upcoming"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D3 - search doctors by name (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Dr Luck is found\", function () { pm.expect(pm.response.text()).to.include(\"Luck\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/search?name=luck",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "luck"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D3 - upper case still works (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Dr Luck is found\", function () { pm.expect(pm.response.text()).to.include(\"Luck\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/search?name=LUCK",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "LUCK"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "D4 - clinic dashboard (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Has the 6 counters\", function () { var j = pm.response.json(); [\"patients\",\"doctors\",\"freeOffices\",\"appointmentsToday\",\"scheduled\",\"prescriptions\"].forEach(function (k) { pm.expect(j).to.have.property(k); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/dashboard/summary",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "summary"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bonus",
+      "item": [
+        {
+          "name": "Bonus 1 - top medicines (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/stats/top-medicines",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "stats",
+                "top-medicines"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "Bonus 2 - doctor workload in October (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/doctors/workload?start=2026-10-01&end=2026-10-31",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "doctors",
+                "workload"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "end",
+                  "value": "2026-10-31"
+                }
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Last - cleanup",
+      "item": [
+        {
+          "name": "C4 - delete the prescription (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"Prescription deleted successfully\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/delete/{{prescriptionId}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "delete",
+                "{{prescriptionId}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        },
+        {
+          "name": "C4 - delete again, id is gone (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Message is correct\", function () { pm.expect(pm.response.text()).to.include(\"The prescription with that id does not exist\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/prescriptions/delete/{{prescriptionId}}",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "api",
+                "prescriptions",
+                "delete",
+                "{{prescriptionId}}"
+              ],
+              "protocol": "http",
+              "port": "8082"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "doctorLuck",
+      "value": "b508a353-f700-4623-be7d-419d3c6d5deb"
+    },
+    {
+      "key": "doctorLeilla",
+      "value": "d6a7a48a-4993-4e98-ba66-8f65af5ec220"
+    },
+    {
+      "key": "doctorJohn",
+      "value": "cededd66-274f-40ba-bcaf-e41ef25256c3"
+    },
+    {
+      "key": "specCardiology",
+      "value": "fbf8ce96-27d3-4e8e-b83f-6dc4fa912324"
+    },
+    {
+      "key": "specDermatology",
+      "value": "476b5ac1-097d-4337-9177-87178b4bdeeb"
+    },
+    {
+      "key": "patientImena",
+      "value": "693a59d5-5582-4278-bc3a-7eda95844d09"
+    },
+    {
+      "key": "patientOm",
+      "value": "1547f3d8-21eb-498c-afca-a4e1ad5ef35d"
+    },
+    {
+      "key": "ssImena",
+      "value": "SS-1001"
+    },
+    {
+      "key": "ssOm",
+      "value": "SS-1002"
+    },
+    {
+      "key": "apptScheduled",
+      "value": "0827cf68-46f8-454b-a212-a08116a8ccaf"
+    },
+    {
+      "key": "apptToConfirm",
+      "value": "3086b1a7-bdfa-45c9-8862-cc03570cb2a0"
+    },
+    {
+      "key": "apptCancelled",
+      "value": "031625f2-9972-4df0-988a-b200638cdd19"
+    },
+    {
+      "key": "apptCompleted",
+      "value": "6eaae37d-fbc8-486a-a997-49a6579d2307"
+    },
+    {
+      "key": "prescriptionId",
+      "value": ""
+    }
+  ]
+}
